@@ -24,7 +24,7 @@ print("Étape 2 : Charger et préparer les données")
 print("=" * 60)
 
 # Étape 2.1 : Charger le dataset
-print("\n📂 Étape 2.1 : Chargement du dataset...")
+print("\n Étape 2.1 : Chargement du dataset...")
 df = pd.read_csv("data/patients_dakar.csv")
 
 print(f"Dataset : {df.shape[0]} patients, {df.shape[1]} colonnes")
@@ -32,7 +32,7 @@ print(f"\nColonnes : {list(df.columns)}")
 print(f"\nDiagnostics :\n{df['diagnostic'].value_counts()}")
 
 # Étape 2.2 : Préparer les features et la cible
-print("\n🔄 Étape 2.2 : Encodage des variables catégoriques...")
+print("\n Étape 2.2 : Encodage des variables catégoriques...")
 le_sexe = LabelEncoder()
 le_region = LabelEncoder()
 
@@ -56,7 +56,7 @@ print("\n" + "=" * 60)
 print("Étape 3 : Séparer entraînement et test")
 print("=" * 60)
 
-print("\n📊 Étape 3.1 : Séparation des données...")
+print("\n Étape 3.1 : Séparation des données...")
 X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.2,
@@ -74,7 +74,7 @@ print("\n" + "=" * 60)
 print("Étape 4 : Entraîner le modèle")
 print("=" * 60)
 
-print("\n🧠 Étape 4.1 : Création et entraînement du RandomForest...")
+print("\n Étape 4.1 : Création et entraînement du RandomForest...")
 model = RandomForestClassifier(
     n_estimators=100,
     random_state=42
@@ -95,7 +95,7 @@ print("Étape 5 : Évaluer le modèle")
 print("=" * 60)
 
 # Étape 5.1 : Prédire sur les données de test
-print("\n🔍 Étape 5.1 : Prédiction sur les données de test...")
+print("\n Étape 5.1 : Prédiction sur les données de test...")
 y_pred = model.predict(X_test)
 
 comparison = pd.DataFrame({
@@ -106,12 +106,12 @@ print("\nComparaison des 10 premiers patients :")
 print(comparison)
 
 # Étape 5.2 : Calculer l'accuracy
-print("\n📊 Étape 5.2 : Calcul de l'accuracy...")
+print("\n Étape 5.2 : Calcul de l'accuracy...")
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Accuracy : {accuracy:.2%}")
 
 # Étape 5.3 : Matrice de confusion et rapport
-print("\n📊 Étape 5.3 : Matrice de confusion et rapport de classification...")
+print("\n Étape 5.3 : Matrice de confusion et rapport de classification...")
 cm = confusion_matrix(y_test, y_pred, labels=model.classes_)
 print("Matrice de confusion :")
 print(cm)
@@ -120,7 +120,7 @@ print("\nRapport de classification :")
 print(classification_report(y_test, y_pred))
 
 # Étape 5.4 : Visualiser la matrice de confusion (optionnel)
-print("\n📊 Étape 5.4 : Visualisation de la matrice de confusion...")
+print("\n Étape 5.4 : Visualisation de la matrice de confusion...")
 os.makedirs("figures", exist_ok=True)
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
@@ -142,7 +142,7 @@ print("Étape 6 : Sérialiser le modèle")
 print("=" * 60)
 
 # Étape 6.1 : Sauvegarder le modèle
-print("\n💾 Étape 6.1 : Sauvegarde du modèle...")
+print("\n Étape 6.1 : Sauvegarde du modèle...")
 os.makedirs("models", exist_ok=True)
 
 joblib.dump(model, "models/model.pkl")
@@ -152,7 +152,7 @@ print(f"Modèle sauvegardé : models/model.pkl")
 print(f"Taille : {size / 1024:.1f} Ko")
 
 # Étape 6.2 : Sauvegarder aussi les encodeurs
-print("\n💾 Étape 6.2 : Sauvegarde des encodeurs et métadonnées...")
+print("\n Étape 6.2 : Sauvegarde des encodeurs et métadonnées...")
 joblib.dump(le_sexe, "models/encoder_sexe.pkl")
 joblib.dump(le_region, "models/encoder_region.pkl")
 joblib.dump(feature_cols, "models/feature_cols.pkl")
@@ -167,7 +167,7 @@ print("Étape 7 : Tester le modèle sérialisé")
 print("=" * 60)
 
 # Étape 7.1 : Recharger le modèle depuis le fichier
-print("\n🔄 Étape 7.1 : Rechargement du modèle...")
+print("\n Étape 7.1 : Rechargement du modèle...")
 model_loaded = joblib.load("models/model.pkl")
 le_sexe_loaded = joblib.load("models/encoder_sexe.pkl")
 le_region_loaded = joblib.load("models/encoder_region.pkl")
@@ -176,7 +176,7 @@ print(f"Modèle rechargé : {type(model_loaded).__name__}")
 print(f"Classes : {list(model_loaded.classes_)}")
 
 # Étape 7.2 : Prédire pour un nouveau patient
-print("\n🏥 Étape 7.2 : Prédiction pour un nouveau patient...")
+print("\n Étape 7.2 : Prédiction pour un nouveau patient...")
 nouveau_patient = {
     'age': 28,
     'sexe': 'F',
