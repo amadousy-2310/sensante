@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
 import numpy as np
+from fastapi.middleware.cors import CORSMiddleware
 
 # --- 1. Schémas Pydantic  ---
 
@@ -36,7 +37,14 @@ app = FastAPI(
     description="Assistant pré-diagnostic médical pour le Sénégal",
     version="0.2.0"
 )
-
+# Autoriser les requetes depuis le frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # En dev : tout accepter
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- 3. Chargement du modèle ---
 
