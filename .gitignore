@@ -1,8 +1,9 @@
+# Clés API - NE JAMAIS COMMITTER
+.env
 # Environnement Python
 __pycache__/
 *.pyc
 venv/
-.env
 
 # Modèles ML
 models/*.pkl
