@@ -83,6 +83,7 @@
         <p class="font-medium">Remplissez le formulaire</p>
         <p class="text-sm mt-1">puis cliquez sur Diagnostiquer</p>
     </div>
+    <div id="historique-container"></div>
 </div>
         </div>
     </main>
@@ -92,9 +93,8 @@
     </footer>
 
     <script>
-        // URL de l'API (a changer si l'API est ailleurs)
 const API_URL = "http://localhost:8000";
-
+let historique = []; 
 async function diagnostiquer() {
     // 1. Recuperer les valeurs du formulaire
     const patient = {
@@ -151,13 +151,107 @@ function afficherChargement() {
         </div>
     `;
 }
-
+function getIcone(diagnostic) {
+    const icones = {
+        paludisme: "🦟",
+        grippe: "🤧",
+        typhoide: "🌡️",
+        sain: "✅"
+    };
+    return icones[diagnostic] || "🏥";
+}
+//Exercice 2 - Historique des diagnostics
+function ajouterHistorique(diagnostic, probabilite) {
+    const now = new Date();
+    const dateHeure = now.toLocaleString('fr-FR');
+    
+    historique.unshift({  // Ajoute au début du tableau
+        diagnostic: diagnostic,
+        probabilite: (probabilite * 100).toFixed(1) + "%",
+        date: dateHeure
+    });
+    
+    if (historique.length > 5) {
+        historique.pop();
+    }
+    
+    afficherHistorique();
+}
+function afficherHistorique() {
+    let historiqueHtml = `
+        <div class="mt-6 bg-white rounded-xl shadow-md p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">📋 Historique (5 dernières consultations)</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="p-2 text-left">Diagnostic</th>
+                            <th class="p-2 text-left">Probabilité</th>
+                            <th class="p-2 text-left">Date/Heure</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    `;
+    
+    if (historique.length === 0) {
+        historiqueHtml += `
+            <tr>
+                <td colspan="3" class="p-2 text-center text-gray-400">Aucune consultation</td>
+            </tr>
+        `;
+    } else {
+        for (let item of historique) {
+            // Code couleur pour le diagnostic dans l'historique
+            let couleurClasse = "text-gray-800";
+            if (item.diagnostic === "palu") couleurClasse = "text-red-600 font-bold";
+            else if (item.diagnostic === "grippe") couleurClasse = "text-orange-600 font-bold";
+            else if (item.diagnostic === "typh") couleurClasse = "text-yellow-600 font-bold";
+            else if (item.diagnostic === "sain") couleurClasse = "text-green-600 font-bold";
+            
+            historiqueHtml += `
+                <tr class="border-b border-gray-100">
+                    <td class="p-2 ${couleurClasse}">${getIcone(item.diagnostic)} ${item.diagnostic}</td>
+                    <td class="p-2">${item.probabilite}</td>
+                    <td class="p-2 text-gray-500 text-xs">${item.date}</td>
+                </tr>
+            `;
+        }
+    }
+    
+    historiqueHtml += `
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    
+    // Ajouter l'historique à la fin de la section résultat
+    const section = document.getElementById("result-section");
+    // On ne remplace pas, on ajoute après le résultat actuel
+    const existingResult = section.innerHTML;
+    if (!existingResult.includes("historique-container")) {
+        // Créer un conteneur pour l'historique s'il n'existe pas
+        const historiqueContainer = document.getElementById("historique-container");
+        if (historiqueContainer) {
+            historiqueContainer.innerHTML = historiqueHtml;
+        } else {
+            // Créer le conteneur
+            const newContainer = document.createElement("div");
+            newContainer.id = "historique-container";
+            newContainer.innerHTML = historiqueHtml;
+            section.appendChild(newContainer);
+        }
+    } else {
+        const historiqueContainer = document.getElementById("historique-container");
+        if (historiqueContainer) historiqueContainer.innerHTML = historiqueHtml;
+    }
+}
 function afficherResultat(r) {
     // Codes couleur par diagnostic
     const couleurs = {
-        palu: {bg:"bg-red-100", text:"text-red-800", bar:"bg-red-500", badge:"bg-red-500"},
+        paludisme: {bg:"bg-red-100", text:"text-red-800", bar:"bg-red-500", badge:"bg-red-500"},
         grippe: {bg:"bg-orange-100", text:"text-orange-800", bar:"bg-orange-500", badge:"bg-orange-500"},
-        typh: {bg:"bg-yellow-100", text:"text-yellow-800", bar:"bg-yellow-500", badge:"bg-yellow-500"},
+        typhoide: {bg:"bg-yellow-100", text:"text-yellow-800", bar:"bg-yellow-500", badge:"bg-yellow-500"},
         sain: {bg:"bg-green-100", text:"text-green-800", bar:"bg-green-500", badge:"bg-green-500"}
     };
     const c = couleurs[r.diagnostic] || couleurs["sain"];
@@ -169,7 +263,8 @@ function afficherResultat(r) {
             <h2 class="text-xl font-bold text-gray-800 mb-4">Resultat</h2>
             <div class="${c.bg} rounded-lg p-4 mb-4">
                 <p class="text-sm text-gray-600">Diagnostic :</p>
-                <p class="text-2xl font-bold ${c.text} uppercase mt-1">
+                <p class="text-2xl font-bold ${c.text} uppercase mt-1 flex items-center gap-2">
+                    ${getIcone(r.diagnostic)} 
                     ${r.diagnostic}
                 </p>
             </div>
@@ -194,6 +289,8 @@ function afficherResultat(r) {
             </div>
         </div>
     `;
+// Ajouter à l'historique
+ajouterHistorique(r.diagnostic, r.probabilite);
 }
 
 function afficherErreur(msg) {
@@ -207,6 +304,8 @@ function afficherErreur(msg) {
         </div>
     `;
 }
+
+
     </script>
 
 </body>
