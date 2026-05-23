@@ -1,12 +1,3 @@
----
-title: Sensante
-emoji: 🏥
-colorFrom: blue
-colorTo: green
-sdk: docker
-pinned: false
----
-
 # SenSante
 Assistant pré-diagnostic médical pour le Sénégal.
 
@@ -21,4 +12,4 @@ https://amdev-2310-sensante.hf.space
 - Docker (conteneurisation)
 
 ## Auteur
-Ton Nom - L2 GLSI - ESP/UCAD - 2026
+Amadou Demba SY - L2 GLSI - ESP/UCAD - 2026
