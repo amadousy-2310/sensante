@@ -1,24 +1,24 @@
-\# SenSante
+---
+title: Sensante
+emoji: 🏥
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
 
-Assistant de pre-diagnostic medical pour le Senegal.
+# SenSante
+Assistant pré-diagnostic médical pour le Sénégal.
 
-\## Description
+## Demo en ligne
+https://amdev-2310-sensante.hf.space
 
-SenSante utilise le Machine Learning pour aider au pre-diagnostic des maladies courantes (paludisme, grippe, typhoïde) a partir des symptomes du patient.
+## Stack
+- scikit-learn (modele ML)
+- FastAPI (API REST)
+- Tailwind CSS (frontend responsive)
+- Groq/Llama 3 (explication LLM)
+- Docker (conteneurisation)
 
-\## Structure du projet
-
-\- 'data/' : Donnees patients (CSV)
-
-\- 'models/' : Modele ML serialise
-
-\- 'api/' : API FastAPI
-
-\- 'frontend/' : Interface web
-
-\- 'notebooks/' : Scripts d'exploration
-
-\## Auteur
-
-Amadou Demba SY
-
+## Auteur
+Ton Nom - L2 GLSI - ESP/UCAD - 2026
